@@ -23,7 +23,7 @@ def verify_time(timestamp):
     now = datetime.datetime.utcnow()
     try:
         msgdt = datetime.datetime.utcfromtimestamp(timestamp)
-    except (TypeError, OSError, OverflowError):
+    except (ValueError, TypeError, OSError, OverflowError):
         raise exceptions.TimestampError()
     delta = now - msgdt
     delta_future = msgdt - now
