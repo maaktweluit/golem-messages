@@ -1035,14 +1035,19 @@ class FileTransferToken(Message):
         'files',
     ] + Message.__slots__
 
+    def deserialize_slot(self, key, value):
+        value = super().deserialize_slot(key, value)
+        if key == 'files':
+            value = [FileTransferToken.FileInfo(f) for f in value]
+        return value
 
-class TokenFilesData(datastructures.FrozenDict):
-    """Represents SUBTASK metadata."""
-    ITEMS = {
-        'path'    :'',
-        'checksum':'',
-        'size'    :0,
-    }
+    class FileInfo(datastructures.FrozenDict):
+        """Represents SUBTASK metadata."""
+        ITEMS = {
+            'path'    :'',
+            'checksum':'',
+            'size'    :0,
+        }
 
 
 def init_messages():
